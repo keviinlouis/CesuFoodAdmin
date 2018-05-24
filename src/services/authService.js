@@ -1,4 +1,4 @@
-import ErrorFormValidation from '../class/ErrorFormValidation'
+import ErrorFormValidation from '../classes/ErrorFormValidation'
 
 export default {
   emailRecuperarSenha: (email) => {

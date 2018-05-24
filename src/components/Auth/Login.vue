@@ -155,7 +155,7 @@
             return false
           }
           authService.login(this.form.email, this.form.senha).then(() => {
-            // TODO Push to Dashboard
+            this.$router.push('/dashboard')
           }).catch((error) => {
             if (error.hasInput('email')) {
               this.$validator.errors.add('login.email', error.getMessageFromInput('email'))
