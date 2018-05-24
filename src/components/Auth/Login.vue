@@ -114,13 +114,11 @@
         form: {
           email: '',
           senha: '',
-          loading: false,
-          random: 0
+          loading: false
         },
         esqueciSenha: {
           email: '',
-          loading: false,
-          random: 0
+          loading: false
         },
         logo: Logo,
         emailEnviadoDialog: false,
@@ -138,11 +136,11 @@
           }
           authService.emailRecuperarSenha(this.esqueciSenha.email).then(() => {
             this.emailEnviadoDialog = true
-            this.esqueciSenha.random = 0
             this.senhaDialog = false
           }).catch((error) => {
-            this.$validator.errors.add('esqueci-senha.email', error.message)
-            this.esqueciSenha.random = 1
+            if (error.hasInput('email')) {
+              this.$validator.errors.add('esqueci-senha.email', error.getMessageFromInput('email'))
+            }
           }).finally(() => {
             this.esqueciSenha.loading = false
           })
@@ -156,18 +154,19 @@
             this.form.loading = false
             return false
           }
-          setTimeout(() => {
-            this.form.loading = false
-            if (this.form.random === 0) {
-              this.form.random = 1
-              this.$validator.errors.add('login.email', 'Email não encontrado')
-            } else if (this.form.random === 1) {
-              this.form.random = 2
-              this.$validator.errors.add('login.senha', 'Senha incorreta')
-            } else {
-              // TODO Push to Dashboard
+          authService.login(this.form.email, this.form.senha).then(() => {
+            // TODO Push to Dashboard
+          }).catch((error) => {
+            if (error.hasInput('email')) {
+              this.$validator.errors.add('login.email', error.getMessageFromInput('email'))
             }
-          }, 500)
+
+            if (error.hasInput('senha')) {
+              this.$validator.errors.add('login.senha', error.getMessageFromInput('senha'))
+            }
+          }).finally(() => {
+            this.form.loading = false
+          })
         })
       }
     }
