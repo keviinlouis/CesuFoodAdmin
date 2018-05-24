@@ -11,13 +11,14 @@
                                     :src="logo"
                             />
                             <v-card-text>
-                                <v-form data-vv-scope="login">
+                                <v-form data-vv-scope="login" v-on:submit.prevent="login">
                                     <v-text-field prepend-icon="person"
                                                   id="email"
                                                   name="email"
                                                   label="Email"
                                                   v-model="form.email"
                                                   v-validate="'required|email'"
+                                                  @keyup.enter="login"
                                                   :error-messages="errors.first('login.email')?errors.first('login.email'):[]"
                                                   type="email">
                                     </v-text-field>
@@ -27,13 +28,15 @@
                                                   label="Senha"
                                                   v-model="form.senha"
                                                   v-validate="'required|min:6'"
+                                                  @keyup.enter="login"
                                                   :error-messages="errors.first('login.senha')?errors.first('login.senha'):[]"
                                                   type="password">
                                     </v-text-field>
                                 </v-form>
                             </v-card-text>
                             <v-card-actions>
-                                <v-btn color="grey darken-1" flat small @click="senhaDialog = true">Esqueci a senha
+                                <v-btn color="grey darken-1" flat small @click="senhaDialog = true">
+                                    Esqueci a senha
                                 </v-btn>
                                 <v-spacer></v-spacer>
                                 <v-btn color="accent"
@@ -56,7 +59,7 @@
                 </v-card-title>
                 <v-card-text>
                     Enviaremos um email para você com as instruções para redefinir sua senha
-                    <v-form data-vv-scope="esqueci-senha">
+                    <v-form data-vv-scope="esqueci-senha" v-on:submit.prevent="enviarEmailRecuperarSenha">
                         <v-text-field prepend-icon="person"
                                       name="email"
                                       label="Email"
@@ -80,12 +83,29 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
+        <v-dialog v-model="emailEnviadoDialog" max-width="500px">
+            <v-card>
+                <v-card-title>
+                    Esqueci a senha
+                </v-card-title>
+                <v-card-text>
+                    Email enviado com sucesso!
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="accent"
+                           @click="emailEnviadoDialog = false">
+                        Enviar
+                    </v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-app>
 </template>
 
 <script>
   import Logo from '@/assets/logo.png'
-
+  import authService from '@/services/authService'
   export default {
     name: 'Login',
     data () {
@@ -94,13 +114,16 @@
         form: {
           email: '',
           senha: '',
-          loading: false
+          loading: false,
+          random: 0
         },
         esqueciSenha: {
           email: '',
-          loading: false
+          loading: false,
+          random: 0
         },
         logo: Logo,
+        emailEnviadoDialog: false,
         senhaDialog: false
       }
     },
@@ -113,10 +136,16 @@
             this.esqueciSenha.loading = false
             return false
           }
-          setTimeout(() => {
-            this.$validator.errors.add('esqueci-senha.email', 'Email não encontrado')
+          authService.emailRecuperarSenha(this.esqueciSenha.email).then(() => {
+            this.emailEnviadoDialog = true
+            this.esqueciSenha.random = 0
+            this.senhaDialog = false
+          }).catch((error) => {
+            this.$validator.errors.add('esqueci-senha.email', error.message)
+            this.esqueciSenha.random = 1
+          }).finally(() => {
             this.esqueciSenha.loading = false
-          }, 500)
+          })
         })
       },
       login: function () {
@@ -127,17 +156,18 @@
             this.form.loading = false
             return false
           }
-          if (Math.floor((Math.random() * 2) + 1) === 1) {
-            setTimeout(() => {
+          setTimeout(() => {
+            this.form.loading = false
+            if (this.form.random === 0) {
+              this.form.random = 1
               this.$validator.errors.add('login.email', 'Email não encontrado')
-              this.form.loading = false
-            }, 500)
-          } else {
-            setTimeout(() => {
+            } else if (this.form.random === 1) {
+              this.form.random = 2
               this.$validator.errors.add('login.senha', 'Senha incorreta')
-              this.form.loading = false
-            }, 500)
-          }
+            } else {
+              // TODO Push to Dashboard
+            }
+          }, 500)
         })
       }
     }

@@ -1,9 +1,13 @@
-import axios from 'axios'
-
 export default {
   emailRecuperarSenha: (email) => {
-    axios.post('/recuperar-senha', {email}).then(()=>{
-
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        if (Math.floor((Math.random() * 2) + 1) === 1) {
+          resolve()
+        } else {
+          reject(new Error('Email não encontrado'))
+        }
+      }, 500)
     })
   }
 }
