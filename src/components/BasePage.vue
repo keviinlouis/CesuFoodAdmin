@@ -1,16 +1,11 @@
 <template>
     <v-app id="inspire">
-        <v-navigation-drawer
-                fixed
-                v-model="drawer"
-                app
-        >
+        <v-navigation-drawer fixed v-model="drawer" app>
             <v-list dense>
                 <div class="logo">
                     <img :src="logo" alt="logo"/>
                 </div>
-                <v-list-tile @click="routePush(menu.route)" v-for="(menu, key) in menus" :key="key"
-                             :color="getColorByRoute(menu.route)">
+                <v-list-tile @click="routePush(menu.route)" v-for="(menu, key) in menus" :key="key" :color="getColorByRoute(menu.route)">
                     <v-list-tile-action>
                         <v-icon :color="getColorByRoute(menu.route)">{{menu.icon}}</v-icon>
                     </v-list-tile-action>
@@ -67,6 +62,11 @@
             icon: 'list',
             label: 'Produtos',
             route: 'produtos'
+          },
+          {
+            icon: 'photo_camera',
+            label: 'Vender',
+            route: ''
           }
         ]
       }

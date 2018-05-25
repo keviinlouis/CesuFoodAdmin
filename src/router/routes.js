@@ -19,7 +19,7 @@ export default [
     component: BasePage,
     children: [
       {
-        path: 'dashboard',
+        path: '',
         component: DashBoard,
         name: 'dashboard'
       },
