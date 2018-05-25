@@ -1,10 +1,10 @@
 <template>
-    <div>asdfasdf</div>
+    <div>asisfodhfsihdoihsidhfoisdh</div>
 </template>
 
 <script>
   export default {
-    name: 'Dashboard'
+    name: 'Produtos'
   }
 </script>
 

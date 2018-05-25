@@ -1,47 +1,51 @@
 <template>
-    <div id="app">
-        <v-app id="inspire">
-            <v-navigation-drawer
-                    fixed
-                    v-model="drawer"
-                    app
-            >
-                <v-list dense>
-                    <div class="logo">
-                        <img :src="logo" alt="logo"/>
-                    </div>
-                    <v-list-tile @click="">
+    <v-app id="inspire">
+        <v-navigation-drawer
+                fixed
+                v-model="drawer"
+                app
+        >
+            <v-list dense>
+                <div class="logo">
+                    <img :src="logo" alt="logo"/>
+                </div>
+                <v-list-tile @click="routePush(menu.route)" v-for="(menu, key) in menus" :key="key"
+                             :color="getColorByRoute(menu.route)">
+                    <v-list-tile-action>
+                        <v-icon :color="getColorByRoute(menu.route)">{{menu.icon}}</v-icon>
+                    </v-list-tile-action>
+                    <v-list-tile-content>
+                        <v-list-tile-title>{{menu.label}}</v-list-tile-title>
+                    </v-list-tile-content>
+                </v-list-tile>
+            </v-list>
+        </v-navigation-drawer>
+        <v-toolbar color="primary" dark fixed app>
+            <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+            <v-toolbar-title>{{pageName()}}</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-menu offset-y left transition="slide-x-transition">
+                <v-btn slot="activator" flat icon>
+                    <v-icon>settings</v-icon>
+                </v-btn>
+                <v-list >
+                    <v-list-tile @click="logout()">
                         <v-list-tile-action>
-                            <v-icon>home</v-icon>
+                            <v-icon>exit_to_app</v-icon>
                         </v-list-tile-action>
-                        <v-list-tile-content>
-                            <v-list-tile-title>Dashboard</v-list-tile-title>
-                        </v-list-tile-content>
-                    </v-list-tile>
-                    <v-list-tile @click="">
-                        <v-list-tile-action>
-                            <v-icon>contact_mail</v-icon>
-                        </v-list-tile-action>
-                        <v-list-tile-content>
-                            <v-list-tile-title>Contact</v-list-tile-title>
-                        </v-list-tile-content>
+                        <v-list-tile-title >
+                            Sair
+                        </v-list-tile-title>
                     </v-list-tile>
                 </v-list>
-            </v-navigation-drawer>
-            <v-toolbar color="primary" dark fixed app>
-                <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
-                <v-toolbar-title>Application</v-toolbar-title>
-            </v-toolbar>
-            <v-content>
-                <v-container fluid fill-height>
-                    <router-view></router-view>
-                </v-container>
-            </v-content>
-            <v-footer color="indigo" app inset>
-                <span class="white--text">&copy; 2018</span>
-            </v-footer>
-        </v-app>
-    </div>
+            </v-menu>
+        </v-toolbar>
+        <v-content>
+            <v-container fluid fill-height>
+                <router-view></router-view>
+            </v-container>
+        </v-content>
+    </v-app>
 </template>
 
 <script>
@@ -52,7 +56,48 @@
     data () {
       return {
         drawer: true,
-        logo: Logo
+        logo: Logo,
+        menus: [
+          {
+            icon: 'dashboard',
+            label: 'Dashboard',
+            route: 'dashboard'
+          },
+          {
+            icon: 'list',
+            label: 'Produtos',
+            route: 'produtos'
+          }
+        ]
+      }
+    },
+    methods: {
+      routePush (route) {
+        this.$router.push({name: route})
+      },
+      pageName () {
+        let pageName = this.$router.currentRoute.name
+        return pageName[0].toUpperCase() + pageName.substring(1)
+      },
+      getColorByRoute (name) {
+        return this.$router.currentRoute.name === name ? 'dark' : 'gray'
+      },
+      logout () {
+        this.routePush('login')
+      },
+      isAdmin () {
+        return true
+      }
+    },
+    created () {
+      if (this.isAdmin()) {
+        this.menus.push(
+          {
+            icon: 'people',
+            label: 'Funcionários',
+            route: 'funcionarios'
+          }
+        )
       }
     }
   }
@@ -65,6 +110,7 @@
         display: block !important;
         padding-left: 6%;
     }
+
     .logo img {
         height: 255px;
 
