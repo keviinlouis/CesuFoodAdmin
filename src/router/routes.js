@@ -15,7 +15,6 @@ export default [
   },
   {
     path: '/',
-    name: 'base-page',
     component: BasePage,
     children: [
       {

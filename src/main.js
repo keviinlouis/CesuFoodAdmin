@@ -11,7 +11,7 @@ import money from 'v-money'
 import {loadProgressBar} from 'axios-progress-bar'
 import 'vuetify/dist/vuetify.min.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
-
+import '@/prototypes.js'
 // Helpers
 
 Vue.config.productionTip = false

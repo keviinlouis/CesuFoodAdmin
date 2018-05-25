@@ -5,7 +5,8 @@
                 <div class="logo">
                     <img :src="logo" alt="logo"/>
                 </div>
-                <v-list-tile @click="routePush(menu.route)" v-for="(menu, key) in menus" :key="key" :color="getColorByRoute(menu.route)">
+                <v-list-tile @click="routePush(menu.route)" v-for="(menu, key) in menus" :key="key"
+                             :color="getColorByRoute(menu.route)">
                     <v-list-tile-action>
                         <v-icon :color="getColorByRoute(menu.route)">{{menu.icon}}</v-icon>
                     </v-list-tile-action>
@@ -23,12 +24,12 @@
                 <v-btn slot="activator" flat icon>
                     <v-icon>settings</v-icon>
                 </v-btn>
-                <v-list >
+                <v-list>
                     <v-list-tile @click="logout()">
                         <v-list-tile-action>
                             <v-icon>exit_to_app</v-icon>
                         </v-list-tile-action>
-                        <v-list-tile-title >
+                        <v-list-tile-title>
                             Sair
                         </v-list-tile-title>
                     </v-list-tile>
@@ -37,7 +38,11 @@
         </v-toolbar>
         <v-content>
             <v-container fluid fill-height>
-                <router-view></router-view>
+                <v-layout row wrap>
+                    <v-flex md12 sm12>
+                        <router-view></router-view>
+                    </v-flex>
+                </v-layout>
             </v-container>
         </v-content>
     </v-app>
@@ -76,8 +81,7 @@
         this.$router.push({name: route})
       },
       pageName () {
-        let pageName = this.$router.currentRoute.name
-        return pageName[0].toUpperCase() + pageName.substring(1)
+        return this.$router.currentRoute.name.upperFirst()
       },
       getColorByRoute (name) {
         return this.$router.currentRoute.name === name ? 'dark' : 'gray'
