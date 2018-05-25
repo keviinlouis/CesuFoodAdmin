@@ -13,9 +13,12 @@ export default class ResponseError {
       return ''
     }
     if (Array.isArray(this.messages[input])) {
-      return this.messages[input][0]
+      return this.messages[input].first()
     }
     return this.messages[input]
+  }
+  getMessage () {
+    return this.messages
   }
 
   getCode () {

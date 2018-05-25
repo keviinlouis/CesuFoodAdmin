@@ -9,7 +9,7 @@ export default {
   },
   logout (state) {
     localStorage.removeItem(NAME_TOKEN)
-
+    state.authenticated = false
     state.token = null
     state.user = {
       id: null,
@@ -17,7 +17,6 @@ export default {
       email: null,
       isMaster: false
     }
-    state.authenticated = false
   },
   setToken (state, token) {
     localStorage.setItem(NAME_TOKEN, token)

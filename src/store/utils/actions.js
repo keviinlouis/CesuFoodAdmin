@@ -1,5 +1,5 @@
 export default {
-  setToast ({commit}, toast) {
+  showToast ({commit}, toast) {
     commit('showToast', toast)
   },
   toogleToast ({state, commit}) {

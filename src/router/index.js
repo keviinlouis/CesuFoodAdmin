@@ -12,34 +12,32 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  const token = store.getters['auth/getToken']
-  const authenticated = store.getters['auth/authenticated']
+  let token = store.getters['auth/getToken']
+  let authenticated = store.getters['auth/authenticated']
   if (!to.name) {
     next({name: 'dashboard'})
     return
   }
-  if (typeof to.meta.auth === 'undefined') {
-    next()
-    return
-  }
 
-  if (to.meta.auth && !authenticated && !token) {
+  if (to.meta.auth && !token) {
     return router.push({name: 'login'})
   }
-  if (!to.meta.auth && (authenticated || token)) {
-    checkHasTokenAndIsUnauthenticated()
-
+  if (!to.meta.auth && token) {
     return router.push({name: 'dashboard'})
   }
-
-  checkHasTokenAndIsUnauthenticated()
-
-  next()
+  if (to.meta.auth && token && !authenticated) {
+    checkHasTokenAndIsUnauthenticated()
+    if (store.getters['auth/getToken']) {
+      next()
+    }
+    return
+  }
+  return next()
 })
 
 function checkHasTokenAndIsUnauthenticated () {
-  const token = store.getters['auth/getToken']
-  const authenticated = store.getters['auth/authenticated']
+  let token = store.getters['auth/getToken']
+  let authenticated = store.getters['auth/authenticated']
   if (authenticated && token) {
     return
   }
@@ -48,12 +46,15 @@ function checkHasTokenAndIsUnauthenticated () {
     return
   }
 
-  store.dispatch('auth/updateStatus', true)
+  store.dispatch('auth/updateAuthenticated', true)
 
-  store.dispatch('auth/checkLogin').then(() => {
-  }).catch(() => {
-    router.push({name: 'login'})
-  })
+  store.dispatch('auth/checkLogin')
+    .catch((error) => {
+      router.push({name: 'login'}, function () {
+        console.log(1)
+      })
+      store.dispatch('utils/showToast', {text: error.getMessage()})
+    })
 }
 
 export default router

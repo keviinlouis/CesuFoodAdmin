@@ -13,3 +13,7 @@ String.prototype.upperFirst = function () {
   let n = this
   return n.charAt(0).toUpperCase() + n.slice(1)
 }
+
+Array.prototype.first = function () {
+  return this[0];
+}

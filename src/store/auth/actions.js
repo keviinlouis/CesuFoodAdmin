@@ -3,7 +3,6 @@ import ResponseError from '@/classes/ResponseError'
 
 export default {
   esqueciSenha (state, email) {
-    console.log(state)
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         if (Math.floor((Math.random() * 2) + 1) === 1) {
@@ -34,20 +33,20 @@ export default {
     })
   },
   checkLogin ({state, commit, getters}) {
-    const token = getters.getToken()
     return new Promise((resolve, reject) => {
+      const token = getters['getToken']
       if (!token) {
         commit('logout')
         return reject(new ResponseError('Login não autorizado', 401))
       }
 
       setTimeout(() => {
-        if (Math.floor((Math.random() * 2) + 1) === 2) {
-          return resolve()
-        } else {
-          commit('logout')
-          return reject(new ResponseError('Login não autorizado', 401))
-        }
+        // if (Math.floor((Math.random() * 2) + 1) === 2) {
+        //   return resolve()
+        // } else {
+        commit('logout')
+        return reject(new ResponseError('Login não autorizado', 401))
+        // }
       }, 500)
     })
   },
