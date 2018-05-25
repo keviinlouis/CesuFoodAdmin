@@ -16,7 +16,7 @@
                                                   id="email"
                                                   name="email"
                                                   label="Email"
-                                                  v-model="form.email"
+                                                  v-model="loginForm.email"
                                                   v-validate="'required|email'"
                                                   @keyup.enter="login"
                                                   :error-messages="errors.first('login.email')?errors.first('login.email'):[]"
@@ -26,7 +26,7 @@
                                                   id="senha"
                                                   name="senha"
                                                   label="Senha"
-                                                  v-model="form.senha"
+                                                  v-model="loginForm.senha"
                                                   v-validate="'required|min:6'"
                                                   @keyup.enter="login"
                                                   :error-messages="errors.first('login.senha')?errors.first('login.senha'):[]"
@@ -41,9 +41,9 @@
                                 <v-spacer></v-spacer>
                                 <v-btn color="accent"
                                        @click="login"
-                                       :loading="form.loading"
-                                       @click.native="loader = 'form.loading'"
-                                       :disabled="form.loading">
+                                       :loading="loginForm.loading"
+                                       @click.native="loader = 'loginForm.loading'"
+                                       :disabled="loginForm.loading">
                                     Login
                                 </v-btn>
                             </v-card-actions>
@@ -63,7 +63,7 @@
                         <v-text-field prepend-icon="person"
                                       name="email"
                                       label="Email"
-                                      v-model="esqueciSenha.email"
+                                      v-model="esqueciSenhaForm.email"
                                       v-validate="'required|email'"
                                       :error-messages="errors.first('esqueci-senha.email')?errors.first('esqueci-senha.email'):[]"
                                       type="email">
@@ -75,9 +75,9 @@
                     <v-spacer></v-spacer>
                     <v-btn color="accent"
                            @click="enviarEmailRecuperarSenha"
-                           :loading="esqueciSenha.loading"
-                           @click.native="loader = 'esqueciSenha.loading'"
-                           :disabled="esqueciSenha.loading">
+                           :loading="esqueciSenhaForm.loading"
+                           @click.native="loader = 'esqueciSenhaForm.loading'"
+                           :disabled="esqueciSenhaForm.loading">
                         Enviar
                     </v-btn>
                 </v-card-actions>
@@ -105,18 +105,18 @@
 
 <script>
   import Logo from '@/assets/logo.png'
-  import authService from '@/services/authService'
+  import {mapActions} from 'vuex'
   export default {
     name: 'Login',
     data () {
       return {
 
-        form: {
+        loginForm: {
           email: '',
           senha: '',
           loading: false
         },
-        esqueciSenha: {
+        esqueciSenhaForm: {
           email: '',
           loading: false
         },
@@ -126,15 +126,19 @@
       }
     },
     methods: {
+      ...mapActions({
+        esqueciSenha: 'auth/esqueciSenha',
+        sendLogin: 'auth/login'
+      }),
       enviarEmailRecuperarSenha () {
-        this.esqueciSenha.loading = true
+        this.esqueciSenhaForm.loading = true
         this.errors.remove('esqueci-senha.email')
         this.$validator.validateAll('esqueci-senha').then((result) => {
           if (!result) {
-            this.esqueciSenha.loading = false
+            this.esqueciSenhaForm.loading = false
             return false
           }
-          authService.emailRecuperarSenha(this.esqueciSenha.email).then(() => {
+          this.esqueciSenha(this.esqueciSenhaForm.email).then(() => {
             this.emailEnviadoDialog = true
             this.senhaDialog = false
           }).catch((error) => {
@@ -142,21 +146,25 @@
               this.$validator.errors.add('esqueci-senha.email', error.getMessageFromInput('email'))
             }
           }).finally(() => {
-            this.esqueciSenha.loading = false
+            this.esqueciSenhaForm.loading = false
           })
         })
       },
       login: function () {
-        this.form.loading = true
+        this.loginForm.loading = true
         this.errors.clear()
         this.$validator.validateAll('login').then((result) => {
           if (!result) {
-            this.form.loading = false
+            this.loginForm.loading = false
             return false
           }
-          authService.login(this.form.email, this.form.senha).then(() => {
+          this.sendLogin({email: this.loginForm.email, senha: this.loginForm.senha}).then(() => {
             this.$router.push('/')
           }).catch((error) => {
+            if (error.getCode() !== 400) {
+              return
+            }
+
             if (error.hasInput('email')) {
               this.$validator.errors.add('login.email', error.getMessageFromInput('email'))
             }
@@ -165,7 +173,7 @@
               this.$validator.errors.add('login.senha', error.getMessageFromInput('senha'))
             }
           }).finally(() => {
-            this.form.loading = false
+            this.loginForm.loading = false
           })
         })
       }

@@ -7,6 +7,7 @@ import VeeValidate, {Validator} from 'vee-validate'
 import ptBr from 'vee-validate/dist/locale/pt_BR.js'
 import router from '@/router'
 import store from '@/store'
+import axios from 'axios'
 import money from 'v-money'
 import {loadProgressBar} from 'axios-progress-bar'
 import 'vuetify/dist/vuetify.min.css'
@@ -29,6 +30,17 @@ Vue.use(VeeValidate, {locale: 'pt_BR'})
 Vue.use(money)
 
 loadProgressBar()
+
+axios.interceptors.response.use(function (response) {
+  let newToken = response.headers['new_token']
+  if (newToken) {
+    store.dispatch('auth/updateToken', newToken)
+  }
+  if (response.status === 401 && response.headers['WWW-Authenticate'] === 'jwt_auth') {
+    store.dispatch('auth/logout')
+  }
+  return response
+})
 
 /* eslint-disable no-new */
 new Vue({

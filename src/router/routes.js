@@ -20,17 +20,26 @@ export default [
       {
         path: '',
         component: DashBoard,
-        name: 'dashboard'
+        name: 'dashboard',
+        meta: {
+          auth: true
+        }
       },
       {
         path: 'produtos',
         component: Produtos,
-        name: 'produtos'
+        name: 'produtos',
+        meta: {
+          auth: true
+        }
       },
       {
         path: 'funcionarios',
         component: Funcionarios,
-        name: 'funcionarios'
+        name: 'funcionarios',
+        meta: {
+          auth: true
+        }
       }
     ],
     meta: {

@@ -6,7 +6,7 @@
                     <img :src="logo" alt="logo"/>
                 </div>
                 <v-list-tile @click="routePush(menu.route)" v-for="(menu, key) in menus" :key="key"
-                             :color="getColorByRoute(menu.route)">
+                             :color="getColorByRoute(menu.route)" v-if="isAdmin()">
                     <v-list-tile-action>
                         <v-icon :color="getColorByRoute(menu.route)">{{menu.icon}}</v-icon>
                     </v-list-tile-action>
@@ -61,17 +61,26 @@
           {
             icon: 'dashboard',
             label: 'Dashboard',
-            route: 'dashboard'
+            route: 'dashboard',
+            master: false
           },
           {
             icon: 'list',
             label: 'Produtos',
-            route: 'produtos'
+            route: 'produtos',
+            master: false
           },
           {
             icon: 'photo_camera',
             label: 'Vender',
-            route: ''
+            route: '',
+            master: false
+          },
+          {
+            icon: 'people',
+            label: 'Funcionários',
+            route: 'funcionarios',
+            master: true
           }
         ]
       }
@@ -91,17 +100,6 @@
       },
       isAdmin () {
         return true
-      }
-    },
-    created () {
-      if (this.isAdmin()) {
-        this.menus.push(
-          {
-            icon: 'people',
-            label: 'Funcionários',
-            route: 'funcionarios'
-          }
-        )
       }
     }
   }

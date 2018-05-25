@@ -1,6 +1,7 @@
-export default class ErrorFormValidation {
-  constructor (messages) {
+export default class ResponseError {
+  constructor (messages, code) {
     this.messages = messages
+    this.code = code
   }
 
   hasInput (input) {
@@ -15,5 +16,9 @@ export default class ErrorFormValidation {
       return this.messages[input][0]
     }
     return this.messages[input]
+  }
+
+  getCode () {
+    return this.code
   }
 }
