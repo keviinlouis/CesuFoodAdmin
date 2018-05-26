@@ -13,9 +13,9 @@ export default class ResponseError {
       return ''
     }
     if (Array.isArray(this.messages[input])) {
-      return this.messages[input].first()
+      return this.messages[input].first().upperFirst()
     }
-    return this.messages[input]
+    return this.messages[input].upperFirst()
   }
   getMessage () {
     return this.messages

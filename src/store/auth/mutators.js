@@ -1,10 +1,10 @@
 import {NAME_TOKEN} from '@/config'
 
 export default {
-  login (state, {data, token}) {
+  login (state, {user, token}) {
     localStorage.setItem(NAME_TOKEN, token)
     state.token = token
-    state.user = data
+    state.user = user
     state.authenticated = true
   },
   logout (state) {

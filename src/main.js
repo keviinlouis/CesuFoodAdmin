@@ -39,8 +39,14 @@ axios.interceptors.response.use(function (response) {
   if (response.status === 401 && response.headers['WWW-Authenticate'] === 'jwt_auth') {
     store.dispatch('auth/logout')
   }
+  if (response.status === 500) {
+    store.dispatch('utils/showToast', {text: 'Ocorreu um erro'})
+  }
   return response
 })
+
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.getters['auth/getToken']
+axios.defaults.headers.common['Accept'] = 'application/json'
 
 /* eslint-disable no-new */
 new Vue({

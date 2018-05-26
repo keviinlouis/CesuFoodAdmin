@@ -159,7 +159,7 @@
             return false
           }
           this.sendLogin({email: this.loginForm.email, senha: this.loginForm.senha}).then(() => {
-            this.$router.push('/')
+            this.$router.push({name: 'dashboard'})
           }).catch((error) => {
             if (error.getCode() !== 400) {
               return

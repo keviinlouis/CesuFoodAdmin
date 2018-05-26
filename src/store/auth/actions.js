@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {URL_BASE} from '@/config'
 import ResponseError from '@/classes/ResponseError'
 
 export default {
@@ -17,19 +18,13 @@ export default {
   },
   login ({state, commit, dispatch}, params) {
     return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (Math.floor((Math.random() * 2) + 1) === 2) {
-          resolve()
-        } else {
-          let error = []
-          if (Math.floor((Math.random() * 2) + 1) === 1) {
-            error['email'] = 'Email não encontrado'
-          } else {
-            error['senha'] = 'Senha incorreta'
-          }
-          reject(new ResponseError(error, 400))
-        }
-      }, 500)
+      axios.post(URL_BASE + 'login', params).then((response) => {
+        commit('login', {user: response.data.data, token: response.data.token})
+        dispatch('utils/showToast', {text: 'Bem vindo ' + response.data.data.nome}, {root: true})
+        resolve()
+      }).catch((error) => {
+        reject(new ResponseError(error.response.data.data, error.response.status))
+      })
     })
   },
   checkLogin ({state, commit, getters}) {
@@ -40,14 +35,12 @@ export default {
         return reject(new ResponseError('Login não autorizado', 401))
       }
 
-      setTimeout(() => {
-        // if (Math.floor((Math.random() * 2) + 1) === 2) {
-        //   return resolve()
-        // } else {
-        commit('logout')
-        return reject(new ResponseError('Login não autorizado', 401))
-        // }
-      }, 500)
+      axios.get(URL_BASE + 'me').then((response) => {
+        commit('login', {user: response.data.data, token: response.data.token})
+        resolve()
+      }).catch((error) => {
+        reject(new ResponseError(error.response.data.data, error.response.status))
+      })
     })
   },
   updateToken ({commit}, token) {
