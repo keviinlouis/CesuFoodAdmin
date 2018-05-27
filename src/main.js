@@ -13,6 +13,7 @@ import {loadProgressBar} from 'axios-progress-bar'
 import 'vuetify/dist/vuetify.min.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import '@/prototypes.js'
+import {NAME_TOKEN} from './config'
 // Helpers
 
 Vue.config.productionTip = false
@@ -45,7 +46,7 @@ axios.interceptors.response.use(function (response) {
   return response
 })
 
-axios.defaults.headers.common['Authorization'] = 'Bearer ' + store.getters['auth/getToken']
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.getItem(NAME_TOKEN)
 axios.defaults.headers.common['Accept'] = 'application/json'
 
 /* eslint-disable no-new */

@@ -39,7 +39,8 @@ export default {
         commit('login', {user: response.data.data, token: response.data.token})
         resolve()
       }).catch((error) => {
-        reject(new ResponseError(error.response.data.data, error.response.status))
+        commit('logout')
+        reject(new ResponseError(error.response.data.message, error.response.status))
       })
     })
   },

@@ -6,7 +6,7 @@
                     <img :src="logo" alt="logo"/>
                 </div>
                 <v-list-tile @click="routePush(menu.route)" v-for="(menu, key) in menus" :key="key"
-                             :color="getColorByRoute(menu.route)" v-if="isAdmin()">
+                             :color="getColorByRoute(menu.route)" v-if="!menu.master || (menu.master && isAdmin)">
                     <v-list-tile-action>
                         <v-icon :color="getColorByRoute(menu.route)">{{menu.icon}}</v-icon>
                     </v-list-tile-action>
@@ -50,12 +50,12 @@
 
 <script>
   import Logo from '@/assets/logo.png'
-
+  import {mapGetters} from 'vuex'
   export default {
     name: 'BasePage',
     data () {
       return {
-        drawer: true,
+        drawer: false,
         logo: Logo,
         menus: [
           {
@@ -96,11 +96,14 @@
         return this.$router.currentRoute.name === name ? 'dark' : 'gray'
       },
       logout () {
-        this.routePush('login')
-      },
-      isAdmin () {
-        return true
+        this.$store.dispatch('auth/logout')
+        this.$router.push({name: 'login'})
       }
+    },
+    computed: {
+      ...mapGetters({
+        isAdmin: 'auth/isAdmin'
+      })
     }
   }
 </script>

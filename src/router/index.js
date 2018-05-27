@@ -12,11 +12,10 @@ const router = new Router({
 })
 
 router.beforeEach((to, from, next) => {
-  let token = store.getters['auth/getToken']
+  let token = localStorage.getItem('jwt_token')
   let authenticated = store.getters['auth/authenticated']
   if (!to.name) {
-    next({name: 'dashboard'})
-    return
+    return next({name: 'dashboard'})
   }
 
   if (to.meta.auth && !token) {
@@ -26,35 +25,12 @@ router.beforeEach((to, from, next) => {
     return router.push({name: 'dashboard'})
   }
   if (to.meta.auth && token && !authenticated) {
-    checkHasTokenAndIsUnauthenticated()
-    if (store.getters['auth/getToken']) {
-      next()
-    }
-    return
+    store.dispatch('auth/checkLogin').catch((error) => {
+      store.dispatch('utils/showToast', {text: error.getMessage()})
+      return router.push({name: 'login'})
+    })
   }
   return next()
 })
-
-function checkHasTokenAndIsUnauthenticated () {
-  let token = store.getters['auth/getToken']
-  let authenticated = store.getters['auth/authenticated']
-  if (authenticated && token) {
-    return
-  }
-
-  if (!authenticated && !token) {
-    return
-  }
-
-  store.dispatch('auth/updateAuthenticated', true)
-
-  store.dispatch('auth/checkLogin')
-    .catch((error) => {
-      router.push({name: 'login'}, function () {
-        console.log(1)
-      })
-      store.dispatch('utils/showToast', {text: error.getMessage()})
-    })
-}
 
 export default router
