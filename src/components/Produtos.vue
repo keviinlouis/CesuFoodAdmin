@@ -130,6 +130,7 @@
       },
       loadProdutos () {
         this.loading = true
+        this.page = 1
         this.$store.dispatch('produtos/loadProdutos', this.query)
           .then((result) => {
             this.query.page = result.meta.current_page
