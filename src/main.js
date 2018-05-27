@@ -10,8 +10,11 @@ import store from '@/store'
 import axios from 'axios'
 import money from 'v-money'
 import {loadProgressBar} from 'axios-progress-bar'
+
+import 'axios-progress-bar/dist/nprogress.css'
 import 'vuetify/dist/vuetify.min.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
+
 import '@/prototypes.js'
 import {NAME_TOKEN} from './config'
 // Helpers

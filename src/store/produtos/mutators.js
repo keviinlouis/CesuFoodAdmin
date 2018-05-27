@@ -4,7 +4,6 @@ export default {
     produtos.forEach((produto) => {
       let produtoIndex = state.produtos.findIndexBy('id', produto.id)
       if (produtoIndex === -1) {
-        console.log(produto)
         state.produtos.push(produto)
       }
     })
@@ -13,6 +12,7 @@ export default {
     state.produtos = produtos
   },
   setProduto (state, produto) {
+    state.produto = produto
     let produtoIndex = state.produtos.findIndexBy('id', produto.id)
     if (produtoIndex === -1) {
       state.produtos.push(produto)

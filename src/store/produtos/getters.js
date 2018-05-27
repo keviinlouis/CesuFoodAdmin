@@ -1,4 +1,9 @@
 export default {
   getProdutos (state) { return state.produtos },
-  getProduto (state) { return state.produto }
+  getProdutosByCategoria: (state) => (id) => {
+    return state.produtos.filter((produto) => {
+      return produto.categoria.id === id
+    })
+  },
+  getProduto (state, id) { return state.produto }
 }

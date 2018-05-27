@@ -1,6 +1,7 @@
 import Login from '@/components/Auth/Login'
 import DashBoard from '@/components/Dashboard'
 import Produtos from '@/components/Produtos'
+import Produto from '@/components/Produto'
 import Funcionarios from '@/components/Funcionarios'
 import BasePage from '@/components/BasePage'
 
@@ -29,6 +30,14 @@ export default [
         path: 'produtos',
         component: Produtos,
         name: 'produtos',
+        meta: {
+          auth: true
+        }
+      },
+      {
+        path: 'produto/:id',
+        component: Produto,
+        name: 'produto',
         meta: {
           auth: true
         }

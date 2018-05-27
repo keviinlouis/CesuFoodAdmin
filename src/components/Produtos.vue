@@ -92,6 +92,10 @@
           {
             text: 'Nome',
             value: 'nome'
+          },
+          {
+            text: 'Status',
+            value: 'status'
           }
         ],
         pagination: {
@@ -153,8 +157,10 @@
         deep: true
       }
     },
-    created () {
-      this.loadProdutos()
+    mounted () {
+      if (this.produtos.length <= 15) {
+        this.loadProdutos()
+      }
       this.debounceSearch = _.debounce(() => {
         this.loadProdutos()
       }, 300)

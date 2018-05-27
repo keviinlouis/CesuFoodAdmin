@@ -1,3 +1,8 @@
 export default {
-  produtos: []
+  produtos: [],
+  produto: {
+    id: 0,
+    nome: null,
+    descricao: null
+  }
 }
