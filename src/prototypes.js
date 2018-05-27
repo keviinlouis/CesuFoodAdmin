@@ -15,5 +15,14 @@ String.prototype.upperFirst = function () {
 }
 
 Array.prototype.first = function () {
-  return this[0];
+  return this[0]
+}
+
+Array.prototype.findBy = function (field, value) {
+  let index = this.findIndex(x => x[field] === value)
+  return this[index]
+}
+
+Array.prototype.findIndexBy = function (field, value) {
+  return this.findIndex(x => x[field] === value)
 }

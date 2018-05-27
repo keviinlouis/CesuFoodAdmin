@@ -36,7 +36,7 @@ export default {
       }
 
       axios.get(URL_BASE + 'me').then((response) => {
-        commit('login', {user: response.data.data, token: response.data.token})
+        commit('setUser', response.data.data)
         resolve()
       }).catch((error) => {
         commit('logout')
