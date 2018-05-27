@@ -36,33 +36,35 @@
 </template>
 
 <script>
+  import {mapGetters, mapActions} from 'vuex'
   export default {
     name: 'Produtos',
     data () {
       return {
         procurar: '',
-        produtos: [
-          {
-            id: 1,
-            fotos: [
-              'https://abrilmdemulher.files.wordpress.com/2016/09/receita-suco-laranja-beterraba-cenoura.jpg?quality=90&strip=info&w=620&h=372&crop=1',
-              'https://static.vix.com/pt/sites/default/files/styles/large/public/bdm/suco-dieta-corpo-celulite-receita-inchaco.jpg?itok=GlnKf9gb',
-              'https://semprevivaalimentos.com.br/wp-content/uploads/2017/02/suco-4.jpg'
-            ],
-            nome: 'Suco',
-            ativo: true,
-            valor: 4.5
-          }
-        ]
+        patinator: {
+
+        }
       }
     },
+    computed: {
+      ...mapGetters({
+        produtos: 'produtos/getProdutos'
+      })
+    },
     methods: {
+      ...mapActions({
+        loadProdutos: 'produtos/loadProdutos'
+      }),
       verProduto (id) {
         console.log(id)
       },
       toogleProdutoStatus (id) {
         console.log(id)
       }
+    },
+    created () {
+      this.loadProdutos()
     }
   }
 </script>
