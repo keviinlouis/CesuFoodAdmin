@@ -3,8 +3,12 @@ import {URL_BASE} from '@/config'
 import ResponseError from '@/classes/ResponseError'
 
 export default {
-  loadProdutos ({commit}, params) {
+  loadProdutos ({commit}, {query, pagination}) {
     return new Promise((resolve, reject) => {
+      let params = {
+        page: pagination.page,
+        ...query
+      }
       axios.get(URL_BASE + 'produto', {params})
         .then((response) => {
           commit('setProdutos', response.data.data)
@@ -15,8 +19,12 @@ export default {
         })
     })
   },
-  loadMoreProdutos ({commit}, params) {
+  loadMoreProdutos ({commit}, {query, pagination}) {
     return new Promise((resolve, reject) => {
+      let params = {
+        page: pagination.page,
+        ...query
+      }
       axios.get(URL_BASE + 'produto', {params})
         .then((response) => {
           commit('addProdutos', response.data.data)

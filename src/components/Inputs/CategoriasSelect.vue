@@ -6,7 +6,7 @@
             item-value="id"
             item-text="nome"
             :loading="categorias.length <= 0"
-            :disabled="categorias.length <= 0"
+            :disabled="categorias.length <= 0 || disabled"
             color="accent"
             autocomplete
             clearable
@@ -18,7 +18,7 @@
   import {mapActions, mapGetters} from 'vuex'
   export default {
     name: 'CategoriasSelect',
-    props: ['value'],
+    props: ['value', 'disabled'],
     methods: {
       ...mapActions({
         loadCategorias: 'categorias/loadCategorias'

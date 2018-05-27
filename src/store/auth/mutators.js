@@ -1,8 +1,10 @@
 import {NAME_TOKEN} from '@/config'
+import axios from 'axios/index'
 
 export default {
   login (state, {user, token}) {
     localStorage.setItem(NAME_TOKEN, token)
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
     state.token = token
     state.user = user
     state.authenticated = true
@@ -20,6 +22,7 @@ export default {
   },
   setToken (state, token) {
     localStorage.setItem(NAME_TOKEN, token)
+    axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
     state.token = token
   },
   setUser (state, user) {
