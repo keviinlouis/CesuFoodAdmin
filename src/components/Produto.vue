@@ -63,7 +63,7 @@
                     />
                 </v-flex>
                 <v-flex md12>
-                    <v-btn flat colo="gray">Voltar</v-btn>
+                    <v-btn flat colo="gray" @click="$router.back()">Voltar</v-btn>
                     <v-btn color="accent" @click="saveProduto()">Salvar</v-btn>
                 </v-flex>
             </v-layout>
