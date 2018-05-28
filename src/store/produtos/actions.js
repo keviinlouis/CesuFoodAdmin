@@ -64,5 +64,29 @@ export default {
           reject(new ResponseError(error.response.message, error.response.status))
         })
     })
+  },
+  createProduto ({commit}, data) {
+    return new Promise((resolve, reject) => {
+      axios.post(URL_BASE + 'produto', data)
+        .then((response) => {
+          commit('setProduto', response.data.data)
+          commit('utils/showToast', {text: 'Produto criado'}, {root: true})
+          resolve()
+        })
+        .catch((error) => {
+          if (error.response.status === 404) {
+            commit('removeProduto', data)
+            commit('utils/showToast', {text: 'Produto não encontrado'}, {root: true})
+          }
+          reject(new ResponseError(error.response.data.data, error.response.status))
+        })
+    })
+  },
+  saveProduto ({dispatch, commit}, data) {
+    if (data.id) {
+      return dispatch('updateProduto', data)
+    } else {
+      return dispatch('createProduto', data)
+    }
   }
 }

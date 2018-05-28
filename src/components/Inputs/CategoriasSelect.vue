@@ -9,7 +9,9 @@
             :disabled="categorias.length <= 0 || disabled"
             color="accent"
             autocomplete
-            clearable
+            :clearable="clearable"
+            :value="value"
+            :error-messages="errorMessages"
             @input="updateCategoria"
     ></v-select>
 </template>
@@ -18,7 +20,7 @@
   import {mapActions, mapGetters} from 'vuex'
   export default {
     name: 'CategoriasSelect',
-    props: ['value', 'disabled'],
+    props: ['value', 'disabled', 'clearable', 'errorMessages'],
     methods: {
       ...mapActions({
         loadCategorias: 'categorias/loadCategorias'

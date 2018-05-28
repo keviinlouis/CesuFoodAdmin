@@ -40,7 +40,9 @@
             <v-container fluid fill-height>
                 <v-layout row wrap>
                     <v-flex md12 sm12>
-                        <router-view></router-view>
+                        <transition>
+                            <router-view/>
+                        </transition>
                     </v-flex>
                 </v-layout>
             </v-container>

@@ -20,13 +20,18 @@ String.prototype.toFloatNumber = function () {
 }
 
 String.prototype.replaceAll = function(search, replacement) {
-  var target = this;
+  let target = this;
   return target.split(search).join(replacement);
 };
 
 Array.prototype.first = function () {
   return this[0]
 }
+
+Array.prototype.last = function () {
+  return this[this.length - 1]
+}
+
 
 Array.prototype.findBy = function (field, value) {
   let index = this.findIndex(x => x[field] === value)
