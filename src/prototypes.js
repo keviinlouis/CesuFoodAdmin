@@ -14,6 +14,16 @@ String.prototype.upperFirst = function () {
   return n.charAt(0).toUpperCase() + n.slice(1)
 }
 
+String.prototype.toFloatNumber = function () {
+  let n = this
+  return parseFloat(n.replaceAll('.', '').replaceAll(',', '.'))
+}
+
+String.prototype.replaceAll = function(search, replacement) {
+  var target = this;
+  return target.split(search).join(replacement);
+};
+
 Array.prototype.first = function () {
   return this[0]
 }

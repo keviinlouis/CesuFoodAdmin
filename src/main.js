@@ -8,7 +8,6 @@ import ptBr from 'vee-validate/dist/locale/pt_BR.js'
 import router from '@/router'
 import store from '@/store'
 import axios from 'axios'
-import money from 'v-money'
 import {loadProgressBar} from 'axios-progress-bar'
 
 import 'axios-progress-bar/dist/nprogress.css'
@@ -30,8 +29,6 @@ Vue.use(Vuetify, {
 
 Validator.localize('pt_BR', ptBr)
 Vue.use(VeeValidate, {locale: 'pt_BR'})
-
-Vue.use(money)
 
 loadProgressBar()
 

@@ -19,7 +19,6 @@
     "font-awesome": "^4.7.0",
     "lodash": "^4.17.10",
     "material-design-icons-iconfont": "^3.0.3",
-    "v-money": "^0.8.1",
     "vee-validate": "^2.0.9",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",
