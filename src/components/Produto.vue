@@ -27,15 +27,16 @@
                             <MoneyField v-model="produto.valor"
                                         label="Valor"
                                         name="valor"
-                                        :value="produto.valor"
-                                        v-validate="{required: true}"
-                                        :error-messages="errors.first('valor')?errors.first('valor'):[]"
+                                        v-validate="{required: true, not_in:0}"
+                                        :error-messages="errors.first('valor') ? errors.first('valor') : []"
                             />
                         </v-flex>
                         <v-flex md12 sm12 xs12 lg12 class="input-field">
                             <CategoriasSelect v-model="produto.categoria.id"
-                                              data-vv-name="categoria"
-                                              :error-messages="errors.first('categoria')?errors.first('categoria'):[]"
+                                              label="Selecione uma categoria"
+                                              name="categoria"
+                                              v-validate="{required: true, not_in: 0}"
+                                              :error-messages="errors.first('categoria') ? errors.first('categoria') : []"
 
                             />
                         </v-flex>
@@ -57,14 +58,17 @@
                             :fotos="produto.fotos"
                             :width="150"
                             :height="150"
-                            :maxFiles="3"
                             :remove="true"
                             v-on:update="updateFotos"
+                            validation="required|min:10"
+                            v-on:validate="validateFotos"
+                            :error-messages="errors.first('fotos')?errors.first('fotos'):[]"
                     />
+
                 </v-flex>
                 <v-flex md12>
                     <v-btn flat colo="gray" @click="$router.back()">Voltar</v-btn>
-                    <v-btn color="accent" @click="saveProduto()">Salvar</v-btn>
+                    <v-btn color="accent" @click="validate()">Salvar</v-btn>
                 </v-flex>
             </v-layout>
             </v-form>
@@ -97,13 +101,42 @@
       }
     },
     methods: {
+      validateFotos (messages) {
+        // TODO terminar validator
+        let result = true
+        if (messages && messages.length) {
+          this.$validator.errors.add('fotos', messages)
+          result = false
+        }
+        if (result && ((this.fotos_adicionadas.length <= 0 && this.fotos_removidas.length >= this.produto.fotos.length) || this.produto.fotos.length <= 0)) {
+          this.validateFotos('Insira pelo menos uma foto')
+          result = false
+        }
+        if (result) {
+          this.errors.remove('fotos')
+        }
+        return result
+      },
       updateFotos ({fotosAdicionadas, fotosRemovidas}) {
         this.fotos_adicionadas = fotosAdicionadas
         this.fotos_removidas = fotosRemovidas
+        this.validateFotos()
       },
       loadProduto (id) {
         this.$store.dispatch('produtos/loadProduto', id).then(() => {
           this.produto = this.$store.getters['produtos/getProduto']
+        })
+      },
+      validate () {
+        this.$validator.validateAll().then((result) => {
+          if (!result) {
+            this.validateFotos()
+            return
+          }
+          if (!this.validateFotos()) {
+            return
+          }
+          this.saveProduto()
         })
       },
       saveProduto () {
@@ -123,7 +156,9 @@
         }
 
         this.$store.dispatch('produtos/saveProduto', produto)
-          .then()
+          .then(() => {
+            this.clearProduto()
+          })
           .catch((error) => {
             if (error.hasInput('nome')) {
               this.$validator.errors.add('nome', error.getMessageFromInput('nome'))
@@ -145,6 +180,13 @@
               this.$validator.errors.add('fotos', error.getMessageFromInput('fotos_removidas'))
             }
           })
+      },
+      clearProduto () {
+        this.$refs.dropzone.clearFotos()
+        this.fotos_removidas = []
+        this.fotos_adicionadas = []
+        this.produto = this.$store.getters['produtos/getProduto']
+        this.errors.remove('fotos')
       }
     },
     watch: {

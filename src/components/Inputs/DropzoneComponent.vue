@@ -1,10 +1,18 @@
 <template>
-    <Dropzone
-            ref="dropzoneInput"
-            id="dropzone"
-            :options="dropzoneOptions"
-            v-on:vdropzone-success="uploaded"
-            v-on:vdropzone-removed-file="removed"/>
+    <div class="dropzone-component">
+        <Dropzone
+                ref="dropzoneInput"
+                id="dropzone"
+                :options="dropzoneOptions"
+                v-on:vdropzone-success="uploaded"
+                v-on:vdropzone-removed-file="removed"/>
+        <v-text-field
+            :value="fotos.length + fotos_adicionadas.length"
+            :error-messages="getErrorMessages()"
+            v-validate="validation"
+            name="dropzone-fotos"
+        />
+    </div>
 </template>
 
 <script>
@@ -18,7 +26,7 @@
     components: {
       Dropzone
     },
-    props: ['fotos', 'maxFiles', 'width', 'height', 'remove'],
+    props: ['fotos', 'maxFiles', 'width', 'height', 'remove', 'errorMessages', 'validation'],
     data () {
       return {
         dropzoneOptions: {
@@ -26,7 +34,7 @@
           thumbnailWidth: this.width,
           thumbnailHeight: this.height,
           maxFilesize: 20,
-          maxFiles: this.maxFiles ? this.maxFiles : 0,
+          maxFiles: this.maxFiles,
           addRemoveLinks: this.remove,
           dictDefaultMessage: 'Arraste os arquivos ou clique aqui para inserir os arquivos',
           dictCancelUpload: 'Cancelar Upload',
@@ -44,7 +52,7 @@
       },
       removed (file, error, xhr) {
         let imagem = this.fotos.find(x => x.search(file.name) !== -1)
-        if (!imagem && imagem.search('imagem') >= 0) {
+        if (!imagem || imagem.search('imagem') >= 0) {
           let fotoAdicionada = this.fotos_adicionadas.findBy('fileName', file.name)
           axios.delete(URL_API + '/api/removeTmp/' + fotoAdicionada.realName)
           let fotoAdicionadaIndex = this.fotos_adicionadas.findIndexBy('fileName', file.name)
@@ -52,7 +60,7 @@
           this.updateFotos()
           return
         }
-        this.fotos_removidas.push(imagem.last())
+        this.fotos_removidas.push(imagem.replace('thumb_', '').split('/').last())
         this.updateFotos()
       },
       addFotosFromUrl (url) {
@@ -67,12 +75,26 @@
         array.forEach(v => this.addFotosFromUrl(v))
       },
       updateFotos () {
-        this.$emit('update', {fotosAdicionadas: this.fotos_adicionadas.map(x => x.realName), fotosRemovidas: this.fotos_removidas})
+        this.$emit('update', {
+          fotosAdicionadas: this.fotos_adicionadas.map(x => x.realName),
+          fotosRemovidas: this.fotos_removidas
+        })
+      },
+      getErrorMessages () {
+        if (this.errors.first('dropzone-fotos')) {
+          return this.errors.first('dropzone-fotos')
+        }
+        if (this.errorMessages.length) {
+          return this.errorMessages
+        }
+        return []
+      },
+      clearFotos () {
+        this.$refs.dropzoneInput.removeAllFiles()
       }
     },
     watch: {
       fotos (value) {
-        console.log(value)
         this.addFotosFromArrayOfUrl(value)
       }
     }
@@ -86,5 +108,11 @@
 
     .dropzone .dz-preview .dz-image {
         z-index: 0;
+    }
+    .dropzone-component{
+
+    }
+    .dropzone-component .input-group__input {
+        display: none;
     }
 </style>

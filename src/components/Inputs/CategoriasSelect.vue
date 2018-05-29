@@ -1,7 +1,8 @@
 <template>
     <v-select
             :items="categorias"
-            label="Categoria"
+            :label="label ? label : 'Categoria'"
+            :name="name"
             single-line
             item-value="id"
             item-text="nome"
@@ -13,14 +14,14 @@
             :value="value"
             :error-messages="errorMessages"
             @input="updateCategoria"
-    ></v-select>
+    />
 </template>
 
 <script>
   import {mapActions, mapGetters} from 'vuex'
   export default {
     name: 'CategoriasSelect',
-    props: ['value', 'disabled', 'clearable', 'errorMessages'],
+    props: ['value', 'disabled', 'clearable', 'errorMessages', 'name', 'label'],
     methods: {
       ...mapActions({
         loadCategorias: 'categorias/loadCategorias'
@@ -35,9 +36,7 @@
       })
     },
     created () {
-      if (this.categorias.length <= 0) {
-        this.$store.dispatch('categorias/loadCategorias', {limit: 0})
-      }
+      this.$store.dispatch('categorias/loadCategorias', {limit: 0})
     }
   }
 </script>

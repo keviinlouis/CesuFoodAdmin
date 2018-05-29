@@ -7,7 +7,7 @@ export default {
     return new Promise((resolve, reject) => {
       axios.get(URL_BASE + 'categoria', {params})
         .then((response) => {
-          commit('addCategorias', response.data.data)
+          commit('setCategorias', response.data.data)
           resolve()
         })
         .catch((error) => {

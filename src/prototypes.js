@@ -16,7 +16,7 @@ String.prototype.upperFirst = function () {
 
 String.prototype.toFloatNumber = function () {
   let n = this
-  return parseFloat(n.replaceAll('.', '').replaceAll(',', '.'))
+  return n.replaceAll('.', '').replaceAll(',', '.')
 }
 
 String.prototype.replaceAll = function(search, replacement) {
