@@ -13,7 +13,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   let token = localStorage.getItem('jwt_token')
-  let authenticated = store.getters['auth/authenticated']
+
   if (!to.name) {
     return next({name: 'dashboard'})
   }
@@ -24,7 +24,7 @@ router.beforeEach((to, from, next) => {
   if (!to.meta.auth && token) {
     return router.push({name: 'dashboard'})
   }
-  if (to.meta.auth && token && !authenticated) {
+  if (to.meta.auth && token && !store.getters['auth/authenticated']) {
     store.dispatch('auth/checkLogin').catch((error) => {
       store.dispatch('utils/showToast', {text: error.getMessage()})
       return router.push({name: 'login'})

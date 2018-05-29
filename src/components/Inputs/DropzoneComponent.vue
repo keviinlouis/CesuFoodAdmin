@@ -44,7 +44,7 @@
       },
       removed (file, error, xhr) {
         let imagem = this.fotos.find(x => x.search(file.name) !== -1)
-        if (!imagem) {
+        if (!imagem && imagem.search('imagem') >= 0) {
           let fotoAdicionada = this.fotos_adicionadas.findBy('fileName', file.name)
           axios.delete(URL_API + '/api/removeTmp/' + fotoAdicionada.realName)
           let fotoAdicionadaIndex = this.fotos_adicionadas.findIndexBy('fileName', file.name)
@@ -56,7 +56,7 @@
         this.updateFotos()
       },
       addFotosFromUrl (url) {
-        if (url.search('imagem') !== -1) {
+        if (url.search('imagem') >= 0) {
           return
         }
         let filename = url.split('/')
@@ -72,6 +72,7 @@
     },
     watch: {
       fotos (value) {
+        console.log(value)
         this.addFotosFromArrayOfUrl(value)
       }
     }

@@ -5,7 +5,7 @@
             <v-layout row wrap>
                 <v-flex md6 sm12 class="inputs-group">
                     <v-layout row wrap>
-                        <v-flex md12 sm12 xs12 lg4 class="input-field">
+                        <v-flex md12 sm12 xs12 lg12 class="input-field">
                             <v-text-field type="text"
                                           name="nome"
                                           v-model="produto.nome"
@@ -23,7 +23,7 @@
                                     :input-value="produto.status"
                             />
                         </v-flex>
-                        <v-flex md6 sm12 xs12 lg1 class="input-field">
+                        <v-flex md6 sm12 xs12 lg4 class="input-field">
                             <MoneyField v-model="produto.valor"
                                         label="Valor"
                                         name="valor"
@@ -32,14 +32,14 @@
                                         :error-messages="errors.first('valor')?errors.first('valor'):[]"
                             />
                         </v-flex>
-                        <v-flex md12 sm12 xs12 lg4 class="input-field">
+                        <v-flex md12 sm12 xs12 lg12 class="input-field">
                             <CategoriasSelect v-model="produto.categoria.id"
                                               data-vv-name="categoria"
                                               :error-messages="errors.first('categoria')?errors.first('categoria'):[]"
 
                             />
                         </v-flex>
-                        <v-flex md12 sm12 xs12 lg4 class="input-field">
+                        <v-flex md12 sm12 xs12 lg12 class="input-field">
                             <v-text-field type="text"
                                           name="descricao"
                                           multi-line
@@ -163,7 +163,16 @@
       }
     },
     destroyed () {
-      this.$store.commit('produtos/setProduto', {})
+      this.$store.commit('produtos/setProduto', {
+        nome: '',
+        valor: 0,
+        descricao: '',
+        status: 0,
+        categoria: {
+          id: 0
+        },
+        fotos: []
+      })
     }
   }
 </script>

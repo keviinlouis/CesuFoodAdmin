@@ -3,7 +3,7 @@
         <v-card-text>
             <v-layout row wrap class="filtros">
                 <v-flex md4>
-                    <CategoriasSelect v-model="query.categoria" />
+                    <CategoriasSelect v-model="query.categoria"/>
                 </v-flex>
                 <v-flex md2>
                     <v-select
@@ -45,15 +45,25 @@
             </v-layout>
             <v-layout row wrap v-else>
                 <v-flex lg2 md4 sm6 xs12 v-for="produto in produtos" :key="produto.id" class="card-produto">
-                    <ProdutoCard :produto="produto" />
+                    <ProdutoCard :produto="produto"/>
                 </v-flex>
             </v-layout>
             <v-layout row justify-center v-if="loading">
                 <v-flex md1>
-                    <v-progress-circular :indeterminate="true" />
+                    <v-progress-circular :indeterminate="true"/>
                 </v-flex>
             </v-layout>
         </v-card-text>
+        <v-btn
+                fab
+                bottom
+                right
+                fixed
+                color="accent"
+                @click="criarProduto()"
+        >
+            <v-icon>add</v-icon>
+        </v-btn>
     </v-card>
 </template>
 
@@ -117,6 +127,9 @@
       })
     },
     methods: {
+      criarProduto () {
+        this.$router.push({name: 'produto'})
+      },
       onScroll () {
         this.offsetTop = window.pageYOffset || document.documentElement.scrollTop
         let diff = (document.documentElement.scrollHeight - this.offsetTop) * -1
@@ -187,5 +200,8 @@
 
     .card-produto-imagem {
         cursor: pointer;
+    }
+    .btn__content{
+        height: auto;
     }
 </style>

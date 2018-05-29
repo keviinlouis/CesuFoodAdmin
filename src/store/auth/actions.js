@@ -37,6 +37,7 @@ export default {
 
       axios.get(URL_BASE + 'me').then((response) => {
         commit('setUser', response.data.data)
+        commit('setAuthenticated', true)
         resolve()
       }).catch((error) => {
         commit('logout')
