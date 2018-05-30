@@ -88,5 +88,38 @@ export default {
     } else {
       return dispatch('createProduto', data)
     }
+  },
+  loadClienteProduto ({commit}, hash) {
+    return new Promise((resolve, reject) => {
+      axios.get(URL_BASE + 'produto-cliente/' + hash)
+        .then((response) => {
+          resolve(response.data.data)
+        })
+        .catch((error) => {
+          if (error.response.status === 404) {
+            commit('utils/showToast', {text: 'Produto Hash não encontrado'}, {root: true})
+            reject(error)
+            return
+          }
+          reject(new ResponseError(error.response.data.data, error.response.status))
+        })
+    })
+  },
+  entregarProduto ({commit}, hash) {
+    return new Promise((resolve, reject) => {
+      axios.post(URL_BASE + 'produto-cliente/' + hash)
+        .then((response) => {
+          commit('utils/showToast', {text: 'Produto entregue com sucesso'}, {root: true})
+          resolve(response.data.data)
+        })
+        .catch((error) => {
+          if (error.response.status === 404) {
+            commit('utils/showToast', {text: 'Produto Hash não encontrado'}, {root: true})
+            reject(error)
+            return
+          }
+          reject(new ResponseError(error.response.data.data, error.response.status))
+        })
+    })
   }
 }
