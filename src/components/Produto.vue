@@ -102,18 +102,15 @@
     },
     methods: {
       validateFotos (messages) {
-        // TODO terminar validator
         let result = true
+        this.errors.remove('fotos')
         if (messages && messages.length) {
           this.$validator.errors.add('fotos', messages)
           result = false
         }
-        if (result && ((this.fotos_adicionadas.length <= 0 && this.fotos_removidas.length >= this.produto.fotos.length) || this.produto.fotos.length <= 0)) {
+        if (result && this.fotos_adicionadas.length <= 0 && this.fotos_removidas.length >= this.produto.fotos.length) {
           this.validateFotos('Insira pelo menos uma foto')
           result = false
-        }
-        if (result) {
-          this.errors.remove('fotos')
         }
         return result
       },
@@ -157,7 +154,7 @@
 
         this.$store.dispatch('produtos/saveProduto', produto)
           .then(() => {
-            this.clearProduto()
+            this.$router.back()
           })
           .catch((error) => {
             if (error.hasInput('nome')) {
@@ -185,7 +182,16 @@
         this.$refs.dropzone.clearFotos()
         this.fotos_removidas = []
         this.fotos_adicionadas = []
-        this.produto = this.$store.getters['produtos/getProduto']
+        this.produto = {
+          nome: '',
+          valor: 0,
+          descricao: '',
+          status: 0,
+          categoria: {
+            id: 0
+          },
+          fotos: []
+        }
         this.errors.remove('fotos')
       }
     },
@@ -205,16 +211,7 @@
       }
     },
     destroyed () {
-      this.$store.commit('produtos/setProduto', {
-        nome: '',
-        valor: 0,
-        descricao: '',
-        status: 0,
-        categoria: {
-          id: 0
-        },
-        fotos: []
-      })
+      this.clearProduto()
     }
   }
 </script>
