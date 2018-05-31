@@ -24,13 +24,11 @@ router.beforeEach((to, from, next) => {
     return next({name: 'dashboard'})
   }
   if (to.meta.auth && token && !store.getters['auth/authenticated']) {
-    console.log('Rota com auth, com token porém sem atenticação')
     store.dispatch('auth/checkLogin').catch((error) => {
       store.dispatch('utils/showToast', {text: error.getMessage()})
       return next({name: 'login'})
     })
   }
-  console.log('Rota com auth, com token')
   return next()
 })
 
