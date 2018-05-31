@@ -19,12 +19,12 @@
     components: { QrcodeReader },
     data () {
       return {
-        pause: false
+        paused: false
       }
     },
     methods: {
       onDecode (content) {
-        this.pause = true
+        this.paused = true
         console.log(content)
       },
       async onInit (promise) {
