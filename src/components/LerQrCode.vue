@@ -25,11 +25,7 @@
     methods: {
       onDecode (content) {
         this.paused = true
-        console.log('Decoded')
-        let url = content.split('vender')
-        console.log('Hash ' + url.last())
-        console.log('Url /vender' + url.last())
-        this.$router.push('/vender' + url.last())
+        this.$router.push('/vender/' + content.split('/').last())
       },
       async onInit (promise) {
         // show loading indicator
