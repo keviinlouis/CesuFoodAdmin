@@ -7,5 +7,6 @@ export default {
     bottom: true,
     right: true,
     left: false
-  }
+  },
+  next_url: null
 }

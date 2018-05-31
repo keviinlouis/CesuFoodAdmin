@@ -4,5 +4,8 @@ export default {
   },
   toogleToast ({state, commit}) {
     commit('toogleToast')
+  },
+  setNextUrl ({state, commit}, url) {
+    commit('setNextUrl', url)
   }
 }

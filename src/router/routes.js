@@ -4,6 +4,7 @@ import Produtos from '@/components/Produtos'
 import Produto from '@/components/Produto'
 import EntregarProduto from '@/components/EntregarProduto'
 import Funcionarios from '@/components/Funcionarios'
+import LerQrCode from '@/components/LerQrCode'
 import BasePage from '@/components/BasePage'
 
 export default [
@@ -20,7 +21,7 @@ export default [
     component: BasePage,
     children: [
       {
-        path: '',
+        path: '/',
         component: DashBoard,
         name: 'dashboard',
         meta: {
@@ -47,6 +48,14 @@ export default [
         path: 'vender/:hash',
         component: EntregarProduto,
         name: 'entregar-produto',
+        meta: {
+          auth: true
+        }
+      },
+      {
+        path: 'ler-qr-code',
+        component: LerQrCode,
+        name: 'ler-qr-code',
         meta: {
           auth: true
         }

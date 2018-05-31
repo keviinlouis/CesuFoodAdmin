@@ -74,8 +74,8 @@
           },
           {
             icon: 'photo_camera',
-            label: 'Vender',
-            route: '',
+            label: 'Ler QrCode',
+            route: 'ler-qr-code',
             master: false
           },
           {
@@ -92,7 +92,7 @@
         this.$router.push({name: route})
       },
       pageName () {
-        return this.$router.currentRoute.name.upperFirst()
+        return this.$router.currentRoute.name.upperFirst().replaceAll('-', ' ')
       },
       getColorByRoute (name) {
         return this.$router.currentRoute.name === name ? 'dark' : 'gray'

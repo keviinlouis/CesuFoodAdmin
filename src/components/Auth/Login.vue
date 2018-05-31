@@ -105,12 +105,11 @@
 
 <script>
   import Logo from '@/assets/logo.png'
-  import {mapActions} from 'vuex'
+  import {mapActions, mapGetters} from 'vuex'
   export default {
     name: 'Login',
     data () {
       return {
-
         loginForm: {
           email: '',
           senha: '',
@@ -124,6 +123,11 @@
         emailEnviadoDialog: false,
         senhaDialog: false
       }
+    },
+    computed: {
+      ...mapGetters({
+        nextUrl: 'utils/getNextUrl'
+      })
     },
     methods: {
       ...mapActions({
@@ -159,6 +163,10 @@
             return false
           }
           this.sendLogin({email: this.loginForm.email, senha: this.loginForm.senha}).then(() => {
+            if (this.nextUrl) {
+              this.$router.push(this.nextUrl)
+              return
+            }
             this.$router.push({name: 'dashboard'})
           }).catch((error) => {
             if (error.getCode() !== 400) {

@@ -31,5 +31,8 @@ export default {
   },
   toogleToast: (state) => {
     state.toast.show = !state.toast.show
+  },
+  setNextUrl: (state, url) => {
+    state.next_url = url
   }
 }
