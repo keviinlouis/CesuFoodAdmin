@@ -25,6 +25,9 @@
     methods: {
       onDecode (content) {
         this.paused = true
+        console.log('Decoded')
+        console.log('Hash ' + content.split('vender')[0])
+        console.log('Url /vender/' + content.split('vender')[0])
         this.$router.push('/vender/' + content.split('vender')[0])
       },
       async onInit (promise) {
