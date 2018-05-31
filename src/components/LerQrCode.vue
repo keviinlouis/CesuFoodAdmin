@@ -25,7 +25,7 @@
     methods: {
       onDecode (content) {
         this.paused = true
-        console.log(content)
+        this.$router.push('/vender/' + content.split('vender')[0])
       },
       async onInit (promise) {
         // show loading indicator
