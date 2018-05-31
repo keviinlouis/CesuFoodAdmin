@@ -29,7 +29,7 @@
         let url = content.split('vender')
         console.log('Hash ' + url.last())
         console.log('Url /vender/' + url.last())
-        this.$router.push('/vender/' + url.last())
+        this.$router.push('/vender' + url.last())
       },
       async onInit (promise) {
         // show loading indicator
