@@ -3,7 +3,7 @@
         <v-card-text>
             <v-layout row wrap class="filtros">
                 <v-flex md4>
-                    <CategoriasSelect v-model="query.categoria"/>
+                    <CategoriasSelect v-model="query.categoria" :clearable="true"/>
                 </v-flex>
                 <v-flex md2>
                     <v-select
