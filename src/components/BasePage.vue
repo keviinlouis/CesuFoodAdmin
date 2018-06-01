@@ -74,6 +74,12 @@
             master: false
           },
           {
+            icon: 'group_work',
+            label: 'Categorias',
+            route: 'categorias',
+            master: false
+          },
+          {
             icon: 'photo_camera',
             label: 'Ler QrCode',
             route: 'ler-qr-code',

@@ -2,7 +2,7 @@
     <v-card>
         <v-card-text>
             <v-layout row wrap>
-                <v-flex md6 sm12 class="inputs-group">
+                <v-flex md6 sm12 class="inputs-group" :class="{'fix-height': isLarge()}">
                     <v-layout row wrap>
                         <v-flex md12 sm12 xs12 lg12 class="input-field">
                             <v-text-field type="text"
@@ -51,7 +51,7 @@
                         </v-flex>
                     </v-layout>
                 </v-flex>
-                <v-flex md6 class="input-foto">
+                <v-flex md6 class="inputs-group">
                     <DropzoneComponent
                             ref="dropzone"
                             :fotos="produto.fotos"
@@ -210,6 +210,9 @@
           fotos: []
         }
         this.errors.remove('fotos')
+      },
+      isLarge () {
+        return this.$vuetify.breakpoint.name === 'xl' || this.$vuetify.breakpoint.name === 'lg' || this.$vuetify.breakpoint.name === 'md'
       }
     },
     watch: {
@@ -238,12 +241,12 @@
         padding: 5px;
     }
 
-    .input-foto {
-        padding: 0 20px;
+    .fix-height {
+        max-height: 430px;
     }
 
     .inputs-group {
         padding: 0 20px;
-        max-height: 430px;
+
     }
 </style>

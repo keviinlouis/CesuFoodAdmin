@@ -15,7 +15,7 @@ export default {
           resolve({meta: response.data.meta, links: response.data.links})
         })
         .catch((error) => {
-          reject(new ResponseError(error.response.message, error.response.status))
+          reject(new ResponseError(error.response.data.message, error.response.status))
         })
     })
   },
@@ -32,7 +32,7 @@ export default {
         })
         .catch((error) => {
           console.log(error)
-          reject(new ResponseError(error.response.message, error.response.status))
+          reject(new ResponseError(error.response.data.message, error.response.status))
         })
     })
   },
@@ -44,7 +44,7 @@ export default {
           resolve()
         })
         .catch((error) => {
-          reject(new ResponseError(error.response.message, error.response.status))
+          reject(new ResponseError(error.response.data.message, error.response.status))
         })
     })
   },
@@ -61,7 +61,7 @@ export default {
             commit('removeProduto', data)
             commit('utils/showToast', {text: 'Produto não encontrado'}, {root: true})
           }
-          reject(new ResponseError(error.response.message, error.response.status))
+          reject(new ResponseError(error.response.data.message, error.response.status))
         })
     })
   },

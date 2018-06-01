@@ -2,6 +2,7 @@ import Login from '@/components/Auth/Login'
 import DashBoard from '@/components/Dashboard'
 import Produtos from '@/components/Produtos'
 import Produto from '@/components/Produto'
+import Categorias from '@/components/Categorias'
 import EntregarProduto from '@/components/EntregarProduto'
 import Funcionarios from '@/components/Funcionarios'
 import LerQrCode from '@/components/LerQrCode'
@@ -40,6 +41,14 @@ export default [
         path: 'produto/:id?',
         component: Produto,
         name: 'produto',
+        meta: {
+          auth: true
+        }
+      },
+      {
+        path: 'categorias',
+        component: Categorias,
+        name: 'categorias',
         meta: {
           auth: true
         }

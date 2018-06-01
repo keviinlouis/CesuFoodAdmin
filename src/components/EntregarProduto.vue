@@ -11,9 +11,12 @@
                 <div class="subheading" v-if="!loading" style="padding-left: 5px">
                     <a @click="goToProduto">{{clienteProduto.produto.nome}}</a> para {{clienteProduto.cliente.email}}
                 </div>
+                <v-alert :value="clienteProduto.status === 3" type="error">
+                    Este produto já foi retirado
+                </v-alert>
                 <v-divider class="my-3"></v-divider>
                 <v-btn large color="gray" class="mx-0" flat @click="goToProdutos()">voltar</v-btn>
-                <v-btn large color="accent" class="mx-0" :loading="loading" :disabled="loading" @click="entregar()">
+                <v-btn large color="accent" class="mx-0" :loading="loading" :disabled="loading || clienteProduto.status === 3" @click="entregar()">
                     entregar
                 </v-btn>
             </v-flex>
@@ -108,6 +111,9 @@
       this.$store.dispatch('produtos/loadClienteProduto', this.$router.currentRoute.params.hash)
         .then((clienteProduto) => {
           this.clienteProduto = clienteProduto
+          if (this.clienteProduto.status === 3) {
+            this.$store.dispatch('utils/showToast', {text: 'Este produto já foi retirado', tempo: 10000})
+          }
         })
         .catch(() => {
           this.$router.push({name: 'dashboard'})
