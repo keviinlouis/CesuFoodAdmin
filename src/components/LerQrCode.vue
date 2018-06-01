@@ -3,7 +3,7 @@
         <v-card-text>
             <v-form>
                 <v-layout row wrap>
-                    <v-flex>
+                    <v-flex offset-md2 offset-ld3 lg7 md8 sm12>
                         <qrcode-reader @init="onInit"  @decode="onDecode" :paused="paused" />
                     </v-flex>
                 </v-layout>
@@ -24,6 +24,10 @@
     },
     methods: {
       onDecode (content) {
+        if (typeof content !== 'string' || !content || content.search('/vender/') === -1) {
+          this.$store.dispatch('utils/showToast', {text: 'QR CODE inválido'})
+          return
+        }
         this.paused = true
         this.$router.push('/vender/' + content.split('/').last())
       },

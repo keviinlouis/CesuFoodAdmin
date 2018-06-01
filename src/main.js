@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import Vuetify from 'vuetify'
 import VeeValidate, {Validator} from 'vee-validate'
+
 import ptBr from 'vee-validate/dist/locale/pt_BR.js'
 import router from '@/router'
 import store from '@/store'

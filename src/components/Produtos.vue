@@ -44,7 +44,7 @@
                 </v-flex>
             </v-layout>
             <v-layout row wrap v-else>
-                <v-flex lg2 md4 sm6 xs12 v-for="produto in produtos" :key="produto.id" class="card-produto">
+                <v-flex lg3 md4 sm6 xs12 v-for="produto in produtos" :key="produto.id" class="card-produto">
                     <ProdutoCard :produto="produto"/>
                 </v-flex>
             </v-layout>

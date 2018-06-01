@@ -20,6 +20,7 @@
             <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
             <v-toolbar-title>{{pageName()}}</v-toolbar-title>
             <v-spacer></v-spacer>
+            <v-toolbar-side-icon @click.stop="routePush('ler-qr-code')"> <v-icon>photo_camera</v-icon> </v-toolbar-side-icon>
             <v-menu offset-y left transition="slide-x-transition">
                 <v-btn slot="activator" flat icon>
                     <v-icon>settings</v-icon>
@@ -92,7 +93,7 @@
         this.$router.push({name: route})
       },
       pageName () {
-        return this.$router.currentRoute.name.upperFirst().replaceAll('-', ' ')
+        return this.$router.currentRoute.name.toUpperCase().replaceAll('-', ' ')
       },
       getColorByRoute (name) {
         return this.$router.currentRoute.name === name ? 'dark' : 'gray'
@@ -106,6 +107,9 @@
       ...mapGetters({
         isAdmin: 'auth/isAdmin'
       })
+    },
+    mounted () {
+      this.drawer = this.$vuetify.breakpoint.name === 'xl' || this.$vuetify.breakpoint.name === 'lg'
     }
   }
 </script>

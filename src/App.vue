@@ -10,13 +10,14 @@
                 v-model="toast.show"
         >
             {{ toast.text }}
-            <v-btn flat color="red" @click.native="toogleToast">Fechar</v-btn>
+            <v-btn flat color="red" @click.native="toogleToast"><v-icon>close</v-icon></v-btn>
         </v-snackbar>
     </div>
 </template>
 
 <script>
-  import {mapGetters, mapActions} from 'vuex'
+  import {mapActions, mapGetters} from 'vuex'
+
   export default {
     name: 'app',
     computed: {
@@ -42,6 +43,10 @@
     }
 
     #nprogress .spinner-icon {
-       display: none;
+        display: none;
+    }
+
+    #app {
+        font-family: 'Roboto', sans-serif
     }
 </style>

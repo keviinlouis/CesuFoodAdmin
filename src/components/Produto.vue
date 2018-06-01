@@ -1,7 +1,6 @@
 <template>
     <v-card>
         <v-card-text>
-            <v-form>
             <v-layout row wrap>
                 <v-flex md6 sm12 class="inputs-group">
                     <v-layout row wrap>
@@ -52,7 +51,7 @@
                         </v-flex>
                     </v-layout>
                 </v-flex>
-                <v-flex md6 class="inputs-group">
+                <v-flex md6 class="input-foto">
                     <DropzoneComponent
                             ref="dropzone"
                             :fotos="produto.fotos"
@@ -60,6 +59,7 @@
                             :height="150"
                             :remove="true"
                             v-on:update="updateFotos"
+                            v-on:uploading="uploading"
                             validation="required|min:10"
                             v-on:validate="validateFotos"
                             :error-messages="errors.first('fotos')?errors.first('fotos'):[]"
@@ -67,11 +67,15 @@
 
                 </v-flex>
                 <v-flex md12>
-                    <v-btn flat colo="gray" @click="$router.back()">Voltar</v-btn>
-                    <v-btn color="accent" @click="validate()">Salvar</v-btn>
+                    <v-btn flat color="gray" @click="$router.back()">Voltar</v-btn>
+                    <v-btn color="accent"
+                           @click="validate()"
+                           :loading="loading"
+                           :disabled="loading"
+                    >Salvar
+                    </v-btn>
                 </v-flex>
             </v-layout>
-            </v-form>
         </v-card-text>
     </v-card>
 </template>
@@ -86,6 +90,8 @@
     components: {CategoriasSelect, MoneyField, DropzoneComponent},
     data () {
       return {
+        loading: false,
+        fotos_uploading: 0,
         produto: {
           nome: '',
           valor: 0,
@@ -101,6 +107,10 @@
       }
     },
     methods: {
+      uploading () {
+        this.loading = true
+        this.fotos_uploading++
+      },
       validateFotos (messages) {
         let result = true
         this.errors.remove('fotos')
@@ -117,6 +127,10 @@
       updateFotos ({fotosAdicionadas, fotosRemovidas}) {
         this.fotos_adicionadas = fotosAdicionadas
         this.fotos_removidas = fotosRemovidas
+        this.fotos_uploading--
+        if (this.fotos_uploading <= 0) {
+          this.loading = false
+        }
         this.validateFotos()
       },
       loadProduto (id) {
@@ -151,10 +165,10 @@
         } else {
           produto.fotos = this.fotos_adicionadas
         }
-
+        this.loading = true
         this.$store.dispatch('produtos/saveProduto', produto)
           .then(() => {
-            this.$router.back()
+            this.$router.push({name: 'produtos'})
           })
           .catch((error) => {
             if (error.hasInput('nome')) {
@@ -177,9 +191,12 @@
               this.$validator.errors.add('fotos', error.getMessageFromInput('fotos_removidas'))
             }
           })
+          .finally(() => {
+            this.loading = false
+          })
       },
       clearProduto () {
-        this.$refs.dropzone.clearFotos()
+        // this.$refs.dropzone.clearFotos()
         this.fotos_removidas = []
         this.fotos_adicionadas = []
         this.produto = {
@@ -220,7 +237,13 @@
     .input-field {
         padding: 5px;
     }
+
+    .input-foto {
+        padding: 0 20px;
+    }
+
     .inputs-group {
         padding: 0 20px;
+        max-height: 430px;
     }
 </style>

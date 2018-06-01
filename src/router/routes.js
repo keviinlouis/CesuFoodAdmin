@@ -53,7 +53,7 @@ export default [
         }
       },
       {
-        path: 'ler-qr-code',
+        path: 'qrcode',
         component: LerQrCode,
         name: 'ler-qr-code',
         meta: {

@@ -5,7 +5,9 @@
                 id="dropzone"
                 :options="dropzoneOptions"
                 v-on:vdropzone-success="uploaded"
-                v-on:vdropzone-removed-file="removed"/>
+                v-on:vdropzone-removed-file="removed"
+                v-on:vdropzone-sending="uploading"
+        />
         <v-text-field
             :value="fotos.length + fotos_adicionadas.length"
             :error-messages="getErrorMessages()"
@@ -45,6 +47,9 @@
       }
     },
     methods: {
+      uploading () {
+        this.$emit('uploading')
+      },
       uploaded (file, response) {
         let foto = {fileName: file.name, realName: response.data}
         this.fotos_adicionadas.push(foto)

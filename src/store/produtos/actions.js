@@ -115,7 +115,12 @@ export default {
         .catch((error) => {
           if (error.response.status === 404) {
             commit('utils/showToast', {text: 'Produto Hash não encontrado'}, {root: true})
-            reject(error)
+            reject(error.response)
+            return
+          }
+          if (error.response.status === 400) {
+            commit('utils/showToast', {text: error.response.data.message}, {root: true})
+            reject(error.response)
             return
           }
           reject(new ResponseError(error.response.data.data, error.response.status))
