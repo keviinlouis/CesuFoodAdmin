@@ -22,6 +22,15 @@
                                     :input-value="produto.status"
                             />
                         </v-flex>
+                        <v-flex md6 sm12 xs12 lg4 class="input-field" style="padding-top: 20px">
+                            <v-switch
+                                    label="Destaque"
+                                    v-model="produto.is_destaque"
+                                    :false-value="false"
+                                    :true-value="true"
+                                    :input-value="produto.is_destaque"
+                            />
+                        </v-flex>
                         <v-flex md6 sm12 xs12 lg4 class="input-field">
                             <MoneyField v-model="produto.valor"
                                         label="Valor"
@@ -97,6 +106,7 @@
           valor: 0,
           descricao: '',
           status: 0,
+          is_destaque: false,
           categoria: {
             id: 0
           },
@@ -156,7 +166,8 @@
           valor: this.produto.valor,
           descricao: this.produto.descricao,
           status: this.produto.status,
-          categoria_id: this.produto.categoria.id
+          categoria_id: this.produto.categoria.id,
+          is_destaque: this.produto.is_destaque
         }
         if (this.produto.id) {
           produto.id = this.produto.id

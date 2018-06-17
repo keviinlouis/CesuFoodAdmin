@@ -119,7 +119,7 @@ const webpackConfig = merge(baseWebpackConfig, {
           handler: 'cacheFirst'
         },
         {
-          urlPattern: /^https:\/\/cesufood-webservice.herokuapp.com,
+          urlPattern: /^https:\/\/cesufood-webservice.herokuapp.com/,
           handler: 'cacheFirst'
         }
       ]
